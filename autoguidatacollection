@@ -1,0 +1,47 @@
+import pyautogui as gui
+import time
+gui.FAILSAFE = False
+
+screenWidth, screenHeight = gui.size()
+
+#stats
+
+gui.moveTo(0, screenHeight)
+
+gui.click()
+
+
+gui.typewrite('chrome', interval=0.50)
+
+gui.press('enter')
+
+import pandas as pd
+
+mousepositiondata = pd.DataFrame()
+columnnames = ['location','x','y']
+locationindex = 1
+locations = []
+xpoints = []
+ypoints = []
+
+def getloc():
+    maxpositions = 10
+    while maxpositions > 0:
+        nowX,nowY = gui.position()
+        print(nowX, nowY)
+        time.sleep(3)
+        xpoints.append(nowX)
+        ypoints.append(nowY)
+        locations.append(10-maxpositions + 1)
+
+        maxpositions = maxpositions - 1
+
+getloc()
+        
+mousepositiondata= pd.DataFrame({"location":locations,
+                                 "xpositions":xpoints,
+                                 "ypositions":ypoints})
+mousepositiondata.to_csv('myscreenpoints.csv')
+
+
+        
