@@ -1,0 +1,25 @@
+import pyautogui as gui
+import time
+from selenium import webdriver
+gui.FAILSAFE = False
+
+
+# before you begin:
+# create 2 folders in same directory as this file
+# 1) loginpage
+# 2) otherpage
+
+screenWidth, screenHeight = gui.size()
+
+browser = webdriver.Chrome(executable_path="chromedriver.exe")
+
+import pandas as pd
+cnames = ['site','loginpage']
+data = pd.read_csv('data.csv', names=cnames)
+#print(data.head(10))
+for idx,site in enumerate(data.site):
+    browser.get(site)
+    classname = data.loginpage[idx]
+    classname = 'loginpage/' if classname==1 else 'otherpage/'
+    imgpath = classname +  str(idx+1).zfill(4)  + '.png'
+    gui.screenshot(imgpath)
